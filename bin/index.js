@@ -2,11 +2,11 @@
 import { execSync } from "child_process";
 
 function switchToMainBranch() {
+  console.log("Switch to main branch...");
+
   const mainBranches = execSync("git branch --list main master", {
     encoding: "utf8",
-  })
-    .split("\n")
-    .map((mainBranches) => mainBranches.trim());
+  });
 
   let mainBranch = null;
   if (mainBranches.includes("main")) {
@@ -14,16 +14,15 @@ function switchToMainBranch() {
   } else if (mainBranches.includes("master")) {
     mainBranch = "master";
   } else {
-    console.error('Neither "main" nor "master" branch found.');
-    return;
+    throw Error('Neither "main" nor "master" branch found.');
   }
 
-  execSync(`git checkout ${mainBranch}`, { stdio: "inherit" });
-
-  console.log(`Switched to ${mainBranch}.`);
+  execSync(`git switch ${mainBranch}`, { stdio: "inherit" });
 }
 
-const getRemoteBranches = () => {
+const fetchRemoteBranches = () => {
+  console.log("Fetch remote branches...");
+
   execSync("git fetch -p", { stdio: "inherit" });
 };
 
@@ -34,7 +33,7 @@ const getBranchesToBeDeleted = () => {
 
   if (!result) {
     console.log("No local branches need to be deleted.");
-    return;
+    return [];
   }
 
   return result.split("\n").filter(Boolean);
@@ -47,15 +46,17 @@ const deleteBranches = (branchesToBeDeleted) => {
     stdio: "inherit",
   });
 
-  console.log("Branches were deleted successfully");
+  console.log("Branches were deleted successfully!");
 };
 
 try {
+  fetchRemoteBranches();
+
   switchToMainBranch();
 
-  getRemoteBranches();
+  const branches = getBranchesToBeDeleted();
 
-  deleteBranches(getBranchesToBeDeleted());
+  if (branches.length) deleteBranches(branches);
 } catch (error) {
   console.error("Error executing command:", error.message);
 }
