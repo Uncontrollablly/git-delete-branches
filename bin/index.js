@@ -52,9 +52,9 @@ try {
 
   switchToMainBranch();
 
-  const branches = getBranchesToBeDeleted();
+  const branchesToBeDeleted = getBranchesToBeDeleted();
 
-  if (branches.length) deleteBranches(branches);
+  if (branchesToBeDeleted.length) deleteBranches(branchesToBeDeleted);
 } catch (error) {
   console.error("Error executing command:", error.message);
 }
