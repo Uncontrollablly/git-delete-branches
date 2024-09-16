@@ -40,7 +40,7 @@ const getBranchesToBeDeleted = () => {
 const deleteBranches = (branchesToBeDeleted) => {
   console.log(`Start deleting branches:\n${branchesToBeDeleted.join("\n")}`);
 
-  execSync(`git branch -d ${branchesToBeDeleted.join(" ")}`, {
+  execSync(`git branch -D ${branchesToBeDeleted.join(" ")}`, {
     stdio: "inherit",
   });
 
