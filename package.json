@@ -1,6 +1,6 @@
 {
   "name": "git-delete-branches",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Batch delete local Git branches that no longer exist on the remote.",
   "type": "module",
   "bin": "bin/index.js",
