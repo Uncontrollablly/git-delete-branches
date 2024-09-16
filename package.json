@@ -14,5 +14,9 @@
     "branch"
   ],
   "author": "yq",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Uncontrollablly/git-delete-branches.git"
+  }
 }
