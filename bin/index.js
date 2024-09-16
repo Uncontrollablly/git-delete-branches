@@ -1,24 +1,22 @@
 #!/usr/bin/env node
 import { execSync } from "child_process";
 
-function switchToMainBranch() {
+const switchToMainBranch = () => {
   console.log("Switch to main branch...");
 
-  const mainBranches = execSync("git branch --list main master", {
+  const res = execSync("git remote show origin", {
     encoding: "utf8",
   });
 
-  let mainBranch = null;
-  if (mainBranches.includes("main")) {
-    mainBranch = "main";
-  } else if (mainBranches.includes("master")) {
-    mainBranch = "master";
-  } else {
-    throw Error('Neither "main" nor "master" branch found.');
-  }
+  const mainBranch = res.match(/HEAD branch: (?<mainBranch>.+)/)?.groups
+    .mainBranch;
 
-  execSync(`git switch ${mainBranch}`, { stdio: "inherit" });
-}
+  if (mainBranch) {
+    execSync(`git switch ${mainBranch}`, { stdio: "inherit" });
+  } else {
+    throw Error("Not found main branch.");
+  }
+};
 
 const fetchRemoteBranches = () => {
   console.log("Fetch remote branches...");
